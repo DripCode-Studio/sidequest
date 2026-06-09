@@ -1,0 +1,192 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-heading: var(--font-press-start);
+  --font-sans: var(--font-vt323), 'Courier New', monospace;
+  --font-mono: var(--font-vt323), 'Courier New', monospace;
+  --font-pixel: var(--font-press-start);
+  --font-pixelify: var(--font-pixelify);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-rarity-common: var(--rarity-common);
+  --color-rarity-rare: var(--rarity-rare);
+  --color-rarity-epic: var(--rarity-epic);
+  --color-rarity-legendary: var(--rarity-legendary);
+  --color-rarity-mythic: var(--rarity-mythic);
+
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+}
+
+:root:root {
+  --background: #001b13;
+  --foreground: #d9d2c3;
+  --card: #03291d;
+  --card-foreground: #d9d2c3;
+  --popover: #03291d;
+  --popover-foreground: #d9d2c3;
+  --primary: #e0a24a;
+  --primary-foreground: #001b13;
+  --secondary: #0a3a29;
+  --secondary-foreground: #d9d2c3;
+  --muted: #0a3a29;
+  --muted-foreground: #7a9486;
+  --accent: #5dffb5;
+  --accent-foreground: #001b13;
+  --destructive: #ff5d5d;
+  --border: #155b40;
+  --input: #0a3a29;
+  --ring: #5dffb5;
+  --radius: 0px;
+
+  --rarity-common: #9aa8a0;
+  --rarity-rare: #5db8ff;
+  --rarity-epic: #c07bff;
+  --rarity-legendary: #e0a24a;
+  --rarity-mythic: #ff6b9d;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-vt323), 'Courier New', monospace;
+  }
+  html {
+    background-color: #001b13;
+  }
+}
+
+@layer utilities {
+  /* Chunky pixel border using layered box-shadows */
+  .pixel-border {
+    box-shadow:
+      0 0 0 2px var(--background),
+      0 0 0 4px var(--border);
+  }
+  .pixel-border-primary {
+    box-shadow:
+      0 0 0 2px var(--background),
+      0 0 0 4px var(--primary);
+  }
+  .pixel-border-accent {
+    box-shadow:
+      0 0 0 2px var(--background),
+      0 0 0 4px var(--accent);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 6px currentColor;
+  }
+  .text-glow-strong {
+    text-shadow: 0 0 4px currentColor, 0 0 12px currentColor;
+  }
+
+  /* CRT scanline overlay */
+  .crt-scanlines::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0px,
+      rgba(0, 0, 0, 0) 2px,
+      rgba(0, 0, 0, 0.18) 3px,
+      rgba(0, 0, 0, 0.18) 4px
+    );
+  }
+  .crt-scanlines::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 49;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(0, 0, 0, 0) 60%,
+      rgba(0, 0, 0, 0.45) 100%
+    );
+  }
+
+  .crt-flicker {
+    animation: crt-flicker 4s infinite steps(60);
+  }
+
+  @keyframes crt-flicker {
+    0%,
+    96%,
+    100% {
+      opacity: 1;
+    }
+    97% {
+      opacity: 0.94;
+    }
+    98% {
+      opacity: 0.98;
+    }
+  }
+
+  .scanline-sweep::after {
+    content: '';
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 120px;
+    z-index: 48;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgba(93, 255, 181, 0) 0%,
+      rgba(93, 255, 181, 0.04) 50%,
+      rgba(93, 255, 181, 0) 100%
+    );
+    animation: sweep 7s linear infinite;
+  }
+  @keyframes sweep {
+    0% {
+      top: -120px;
+    }
+    100% {
+      top: 100%;
+    }
+  }
+
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(21, 91, 64, 0.25) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(21, 91, 64, 0.25) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  .heatmap-glow {
+    box-shadow: 0 0 6px var(--accent);
+  }
+}
